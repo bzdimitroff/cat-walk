@@ -6,13 +6,21 @@ import net.rdyonline.catwalk.data.Image;
 import net.rdyonline.catwalk.data.api.cat.CatApi;
 import net.rdyonline.catwalk.tasks.SafeASyncTask;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+/***
+ * The activity is pretty straight forward, so I didn't see the need to add in
+ * any fragments to contain the logic for the sake of having fragments.
+ * 
+ * 
+ */
 public class DisplayCatActivity extends Activity {
 
 	private int mCurrentPage = 1;
@@ -27,6 +35,11 @@ public class DisplayCatActivity extends Activity {
 		setContentView(R.layout.activity_display_cat);
 		bindViews();
 		setListeners();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 
 		loadNextCat();
 	}
@@ -49,7 +62,7 @@ public class DisplayCatActivity extends Activity {
 	}
 
 	private void loadNextCat() {
-		new SafeASyncTask<List<Image>>(this) {
+		SafeASyncTask<List<Image>> task = new SafeASyncTask<List<Image>>(this) {
 
 			@Override
 			protected List<Image> onRun() {
@@ -58,19 +71,32 @@ public class DisplayCatActivity extends Activity {
 
 			@Override
 			protected void onSuccess(List<Image> result) {
-				Image image = result.get(mPositionInPage);
-				Picasso.with(this.getContext()).load(image.url).into(mCatImage);
-
-				mCatImage.setVisibility(View.VISIBLE);
-
-				if (mPositionInPage == 20 - 1) {
-					mCurrentPage++;
-					mPositionInPage = 0;
+				if (result != null) {
+					updateImage(getContext(), result.get(mPositionInPage));
 				} else {
-					mPositionInPage++;
+					String error = getContext().getString(R.string.error);
+					Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
+							.show();
 				}
 			}
-		}.execute();
+		};
+		
+		task.execute();
+	}
+	
+	private void updateImage(Context context, Image image) {
+		Picasso.with(context).load(image.url).into(mCatImage);
+		mCatImage.setVisibility(View.VISIBLE);
+
+		incrementPosition();
 	}
 
+	private void incrementPosition() {
+		if (mPositionInPage == 20 - 1) {
+			mCurrentPage++;
+			mPositionInPage = 0;
+		} else {
+			mPositionInPage++;
+		}
+	}
 }
