@@ -5,11 +5,13 @@ import java.util.List;
 import net.rdyonline.catwalk.data.Image;
 import net.rdyonline.catwalk.data.api.cat.CatApi;
 import net.rdyonline.catwalk.tasks.SafeASyncTask;
+import net.rdyonline.catwalk.ui.RoundedTransformation;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class DisplayCatActivity extends Activity {
 	private int mCurrentPage = 1;
 	private int mPositionInPage = 0;
 
+	private ViewGroup mLoadingContainer;
 	private ImageView mCatImage;
 
 	@Override
@@ -45,6 +48,7 @@ public class DisplayCatActivity extends Activity {
 	}
 
 	private void bindViews() {
+		mLoadingContainer = (ViewGroup) findViewById(R.id.loading_container);
 		mCatImage = (ImageView) findViewById(R.id.cat);
 	}
 
@@ -62,6 +66,8 @@ public class DisplayCatActivity extends Activity {
 	}
 
 	private void loadNextCat() {
+		mLoadingContainer.setVisibility(View.VISIBLE);
+
 		SafeASyncTask<List<Image>> task = new SafeASyncTask<List<Image>>(this) {
 
 			@Override
@@ -80,13 +86,22 @@ public class DisplayCatActivity extends Activity {
 				}
 			}
 		};
-		
+
 		task.execute();
 	}
-	
+
+	/**
+	 * There's a new image available for the users perusal, show it to them
+	 * 
+	 * @param context
+	 * @param image
+	 */
 	private void updateImage(Context context, Image image) {
-		Picasso.with(context).load(image.url).into(mCatImage);
+		mLoadingContainer.setVisibility(View.INVISIBLE);
 		mCatImage.setVisibility(View.VISIBLE);
+
+		Picasso.with(context).load(image.url)
+				.transform(new RoundedTransformation()).into(mCatImage);
 
 		incrementPosition();
 	}
