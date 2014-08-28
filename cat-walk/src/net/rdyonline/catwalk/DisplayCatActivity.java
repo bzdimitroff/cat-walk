@@ -1,16 +1,56 @@
 package net.rdyonline.catwalk;
 
+import java.util.List;
+
+import net.rdyonline.catwalk.data.Image;
+import net.rdyonline.catwalk.data.api.cat.CatApi;
+import net.rdyonline.catwalk.tasks.SafeASyncTask;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 public class DisplayCatActivity extends Activity {
 
+	private int mCurrentPage = 1;
+	private int mPositionInPage = 0;
+	
+	private ImageView mCatImage;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_display_cat);
-
+		bindViews();
+		
+		loadNextCat();
+	}
+	
+	private void bindViews() {
+		mCatImage = (ImageView) findViewById(R.id.cat);
 	}
 
+	private void loadNextCat() {
+		new SafeASyncTask<List<Image>>(this) {
+
+			@Override
+			protected List<Image> onRun() {
+				return new CatApi("http://thecatapi.com").getPage(mCurrentPage);
+			}
+
+			@Override
+			protected void onSuccess(List<Image> result) {
+				Image image = result.get(mPositionInPage);
+				Picasso.with(this.getContext()).load(image.url).into(mCatImage);
+				
+				mCatImage.setVisibility(View.VISIBLE);
+				
+				mPositionInPage++;
+			}
+		}.execute();
+	}
+	
 }
