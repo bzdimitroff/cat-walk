@@ -1,0 +1,37 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="net.rdyonline.catwalk.DisplayCatActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/loading_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/cat17" />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loading_cat"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/loading_text_spacing"
+            android:text="@string/loading"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/cat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="invisible" />
+
+</FrameLayout>
