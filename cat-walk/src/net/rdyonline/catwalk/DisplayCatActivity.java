@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,7 +107,6 @@ public class DisplayCatActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				mCatImage.setVisibility(View.INVISIBLE);
 				loadNextCat();
 			}
 		};
@@ -114,7 +115,7 @@ public class DisplayCatActivity extends Activity {
 	}
 
 	private void loadNextCat() {
-		mLoadingContainer.setVisibility(View.VISIBLE);
+		showLoadingContainer();
 		mLoadingText.setText(this.getString(R.string.loading));
 
 		SafeASyncTask<List<Image>> task = new SafeASyncTask<List<Image>>(this) {
@@ -139,6 +140,23 @@ public class DisplayCatActivity extends Activity {
 
 		task.execute();
 	}
+	
+	private void showImage() {
+		Animation shrink = AnimationUtils.loadAnimation(this, R.anim.shrink);
+		mLoadingContainer.startAnimation(shrink);
+		
+		Animation grow = AnimationUtils.loadAnimation(this, R.anim.grow);
+		mCatImage.startAnimation(grow);
+	}
+	
+	private void showLoadingContainer() {
+		Animation shrink = AnimationUtils.loadAnimation(this, R.anim.shrink);
+		mCatImage.startAnimation(shrink);
+		
+		Animation grow = AnimationUtils.loadAnimation(this, R.anim.grow);
+		mLoadingContainer.startAnimation(grow);
+		
+	}
 
 	/**
 	 * There's a new image available for the users perusal
@@ -147,11 +165,10 @@ public class DisplayCatActivity extends Activity {
 	 * @param image
 	 */
 	private void updateImage(Context context, Image image) {
-		mLoadingContainer.setVisibility(View.INVISIBLE);
-		mCatImage.setVisibility(View.VISIBLE);
-
 		Picasso.with(context).load(image.url)
 				.transform(new RoundedTransformation()).into(mCatImage);
+		
+		showImage();
 
 		incrementPosition();
 	}
