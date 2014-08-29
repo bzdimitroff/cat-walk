@@ -20,8 +20,6 @@ import com.squareup.picasso.Picasso;
 /***
  * The activity is pretty straight forward, so I didn't see the need to add in
  * any fragments to contain the logic for the sake of having fragments.
- * 
- * 
  */
 public class DisplayCatActivity extends Activity {
 
@@ -47,6 +45,10 @@ public class DisplayCatActivity extends Activity {
 		loadNextCat();
 	}
 
+	/**
+	 * Can use dependency injection library like ButterKnige here for views if
+	 * you want, but there isn't very much UI, so I've just bound them manually
+	 */
 	private void bindViews() {
 		mLoadingContainer = (ViewGroup) findViewById(R.id.loading_container);
 		mCatImage = (ImageView) findViewById(R.id.cat);
@@ -80,6 +82,7 @@ public class DisplayCatActivity extends Activity {
 				if (result != null) {
 					updateImage(getContext(), result.get(mPositionInPage));
 				} else {
+					// TODO(benp) swap this out for checking network state
 					String error = getContext().getString(R.string.error);
 					Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
 							.show();
@@ -91,7 +94,7 @@ public class DisplayCatActivity extends Activity {
 	}
 
 	/**
-	 * There's a new image available for the users perusal, show it to them
+	 * There's a new image available for the users perusal
 	 * 
 	 * @param context
 	 * @param image
@@ -106,6 +109,14 @@ public class DisplayCatActivity extends Activity {
 		incrementPosition();
 	}
 
+	/**
+	 * We need to keep track of where the user is through the list of cats
+	 * the API is returning
+	 * 
+	 * At some point, the API will stop returning lists of cats, but that 
+	 * isn't accounted for in this implementation of the app. With more time,
+	 * it's something that should be considered
+	 */
 	private void incrementPosition() {
 		if (mPositionInPage == 20 - 1) {
 			mCurrentPage++;

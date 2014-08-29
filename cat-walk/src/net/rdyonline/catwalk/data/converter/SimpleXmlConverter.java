@@ -1,4 +1,10 @@
 /*
+ * There was already a snippet on GitHub for converting XML, so I just nabbed
+ * it from here:
+ * 
+ * https://github.com/mobile-professionals/retrofit-simplexmlconverter
+ * 
+ * 
  * Copyright (C) 2013 Mobile Professionals
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

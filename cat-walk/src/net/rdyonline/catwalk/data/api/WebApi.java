@@ -6,9 +6,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.Converter;
 
+/***
+ * Core web API that wraps Retrofit.
+ * 
+ * @author Ben Pearson
+ * 
+ */
 public abstract class WebApi {
-
-	private final static String TAG = WebApi.class.getSimpleName();
 
 	protected String mDomain = null;
 
@@ -39,12 +43,19 @@ public abstract class WebApi {
 				}).build();
 	}
 
+	/**
+	 * This class needs to be extended and you need to provide your converter
+	 * You can provide any RetroFit converter, e.g. Json or Xml
+	 * 
+	 * @return new instance of a RetroFit {@link Converter}
+	 */
 	protected abstract Converter getConverter();
 
 	/**
 	 * I've highlighted a couple of edge cases that could happen and you would
 	 * likely want to handle. If I was spending more than a few hours on this
-	 * app I would handle them more gracefully.
+	 * app I would handle them more gracefully. You could easily pass them back
+	 * to the UI using an EventBus
 	 * 
 	 * @param cause
 	 * @return return the error that has passed in - this gives you the
@@ -72,5 +83,4 @@ public abstract class WebApi {
 	protected <T> T newInstance(Class<T> type) {
 		return (T) mAdapter.create(type);
 	}
-
 }

@@ -4,7 +4,7 @@ import net.rdyonline.catwalk.data.converter.SimpleXmlConverter;
 import retrofit.converter.Converter;
 
 /**
- * There was already a snippet on GitHub for converting JSON, so I just nabbed
+ * There was already a snippet on GitHub for converting XML, so I just nabbed
  * it from here:
  * 
  * https://github.com/mobile-professionals/retrofit-simplexmlconverter

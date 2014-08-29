@@ -7,7 +7,9 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 /***
- * Prefer the image to have rounded corners
+ * Prefer the image to have rounded corners. There are a few ways that you 
+ * can do this, but Romain Guy and Chet Hassey covered this topic and
+ * advised that Bitmap shaders are the optimal way of doing it
  * 
  * @author Ben Pearson
  * 
