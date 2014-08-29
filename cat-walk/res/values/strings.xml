@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cat Walk</string>
+
+    <!-- Display cat -->
+    <string name="loading">Loading..</string>
+    <string name="no_network">No network connection</string>
+    <string name="error">Could not get cat :( Check your connection</string>
+    
+</resources>
