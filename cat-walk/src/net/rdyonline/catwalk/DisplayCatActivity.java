@@ -58,6 +58,7 @@ public class DisplayCatActivity extends Activity {
 	 * 
 	 * @return true if either WiFi or mobile data is available
 	 */
+	// TODO(benp) move to utils class
 	private boolean isConnected() {
 		ConnectivityManager conMngr = (ConnectivityManager) this
 				.getSystemService(Activity.CONNECTIVITY_SERVICE);
@@ -122,6 +123,7 @@ public class DisplayCatActivity extends Activity {
 
 			@Override
 			protected List<Image> onRun() {
+				// TODO(benp) should be loaded in from Config..
 				return new CatApi("http://thecatapi.com").getPage(mCurrentPage);
 			}
 
