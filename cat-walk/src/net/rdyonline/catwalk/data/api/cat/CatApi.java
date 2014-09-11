@@ -16,6 +16,12 @@ public class CatApi extends XmlApi {
 		super(domain);
 	}
 
+	/**
+	 * Fetch a page of cats at a time
+	 * 
+	 * @param pageNumber
+	 * @return all of the {@link Image} that are available on the page
+	 */
 	public List<Image> getPage(int pageNumber) {
 		final ResponseWrapper wrapper;
 
